@@ -2,7 +2,9 @@ from enum import Enum
 from random import choice
 
 
-def rock_paper_scissor():
+def rock_paper_scissor(name):
+
+    print(name)
 
     def run_game():
 
@@ -64,4 +66,15 @@ def rock_paper_scissor():
 
 
 if __name__ == "__main__":
-    rock_paper_scissor()()
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Game Description")
+    parser.add_argument(
+        "-n", "--name", metavar="name", required=False, help="Enter Name"
+    )
+    args = parser.parse_args()
+
+    run_game = rock_paper_scissor("Player_One" if args.name is None else args.name)
+
+    if __name__ == "__main__":
+        run_game()
