@@ -1,0 +1,67 @@
+from enum import Enum
+from random import choice
+
+
+def rock_paper_scissor():
+
+    def run_game():
+
+        class RPS(Enum):
+            ROCK = 1
+            PAPER = 2
+            SCISSORS = 3
+
+        end_loop = True
+        while end_loop:
+            user_choice = input(
+                "\nEnter...\n1 for Rock\n2 for Paper or\n3 for Scissors\n\n"
+            )
+
+            if user_choice not in ["1", "2", "3"]:
+                print("\nYou must enter 1,2 or 3\n")
+                continue
+            else:
+                end_loop = False
+
+            entered_choice = int(user_choice)
+            computer_choice = int(choice("123"))
+            print(computer_choice)
+
+            print(
+                f"\nYou chose {RPS(entered_choice).name}\nComputer chose {RPS(computer_choice).name}"
+            )
+
+            def is_match() -> str:
+                if entered_choice == computer_choice:
+                    return "Tie Game!"
+                elif entered_choice == 1 and computer_choice == 3:
+                    return "You Win 🎉"
+                elif entered_choice == 2 and computer_choice == 1:
+                    return "You Win 🎉"
+                elif entered_choice == 3 and computer_choice == 2:
+                    return "You Win 🎉"
+                else:
+                    return "You loose 🥲"
+
+            check_winner = is_match()
+
+            print(check_winner)
+
+            while True:
+                play_again = input("\nWanna play again?\nY for Yes or\nQ to Quit\n\n")
+                if play_again.lower() not in ["y", "q"]:
+                    print("\nYou must enter the above choices.")
+                    continue
+                else:
+                    break
+
+            if play_again.lower() == "y":
+                run_game()
+            else:
+                return
+
+    return run_game
+
+
+if __name__ == "__main__":
+    rock_paper_scissor()()
