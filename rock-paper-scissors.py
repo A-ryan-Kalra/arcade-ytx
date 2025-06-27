@@ -5,15 +5,18 @@ from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
 from rich.panel import Panel
 from rich import print
 from rich.console import Console
+from rich.spinner import Spinner
 import time
+from rich.live import Live
 
 
 def rock_paper_scissor(name):
 
-    print(name)
+    # print(name)
 
     def run_game():
         console = Console()
+        console.print()
 
         class RPS(Enum):
             ROCK = 1
@@ -38,7 +41,7 @@ def rock_paper_scissor(name):
             user_choice = input("\nYour choice: ")
 
             if user_choice not in ["1", "2", "3"]:
-                print("\nYou must enter 1,2 or 3\n")
+                console.print("\nYou must enter 1,2 or 3\n", style="red bold on black")
                 continue
             else:
                 end_loop = False
@@ -84,7 +87,9 @@ def rock_paper_scissor(name):
                 )
                 play_again = input("\nYour choice : ")
                 if play_again.lower() not in ["y", "q"]:
-                    print("\nYou must enter the above choices.")
+                    console.print(
+                        "\nYou must enter the above choices.", style="red bold on black"
+                    )
                     continue
                 else:
                     break
@@ -111,4 +116,9 @@ if __name__ == "__main__":
     run_game = rock_paper_scissor("Player_One" if args.name is None else args.name)
 
     if __name__ == "__main__":
+        print("\n")
+        # spinner = Spinner("aesthetic", text="Processing...")
+        # with Live(spinner, refresh_per_second=3):
+        #     time.sleep(5)
+
         run_game()
