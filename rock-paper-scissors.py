@@ -1,5 +1,11 @@
 from enum import Enum
 from random import choice
+import os
+from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
+from rich.panel import Panel
+from rich import print
+from rich.console import Console
+import time
 
 
 def rock_paper_scissor(name):
@@ -7,6 +13,7 @@ def rock_paper_scissor(name):
     print(name)
 
     def run_game():
+        console = Console()
 
         class RPS(Enum):
             ROCK = 1
@@ -15,9 +22,22 @@ def rock_paper_scissor(name):
 
         end_loop = True
         while end_loop:
-            user_choice = input(
-                "\nEnter...\n1 for Rock\n2 for Paper or\n3 for Scissors\n\n"
+            menu = "Enter...\n1 for Rock\n2 for Paper or\n3 for Scissors"
+
+            print(
+                Panel.fit(
+                    menu,
+                    title="Please Select an Option",
+                    style="bold green",
+                    border_style="magenta",
+                    padding=(1, 2),
+                )
             )
+
+            user_choice = input("\nYour choice: ")
+            # user_choice = input(
+            #     "\nEnter...\n1 for Rock\n2 for Paper or\n3 for Scissors\n\n"
+            # )
 
             if user_choice not in ["1", "2", "3"]:
                 print("\nYou must enter 1,2 or 3\n")
@@ -27,10 +47,10 @@ def rock_paper_scissor(name):
 
             entered_choice = int(user_choice)
             computer_choice = int(choice("123"))
-            print(computer_choice)
+            # print(computer_choice)
 
-            print(
-                f"\nYou chose {RPS(entered_choice).name}\nComputer chose {RPS(computer_choice).name}"
+            console.print(
+                f"\nYou chose [cyan]{RPS(entered_choice).name}[/cyan]\nComputer chose [magenta]{RPS(computer_choice).name}[/magenta]"
             )
 
             def is_match() -> str:
@@ -58,8 +78,10 @@ def rock_paper_scissor(name):
                     break
 
             if play_again.lower() == "y":
+                # os.system("cls" if os.name == "nt" else "clear")
                 run_game()
             else:
+                # os.system("cls" if os.name == "nt" else "clear")
                 return
 
     return run_game
