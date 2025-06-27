@@ -89,16 +89,3 @@ class CurrentAccount(BankAccount):
             self.viable_transaction_current(amount, self.overdraft_limit)
         except BalanceException as error:
             print(error)
-
-
-if __name__ == "__main__":
-    aryan = CurrentAccount("Aryan Kalra", 1221)
-    shubham = SavingsAccount("Shubham Kalra", 300)
-    aryan.show_balance()
-    # aryan.deposit(2000)
-    # shubham.deposit(2000)
-    # aryan.show_balance()
-    aryan.withdraw_amount(2000)
-    aryan.withdraw_amount(2000)
-    # aryan.transfer_amount(200, shubham)
-    # aryan.withdraw_amount(2341)
