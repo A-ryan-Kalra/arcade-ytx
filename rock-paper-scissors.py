@@ -24,20 +24,18 @@ def rock_paper_scissor(name):
         while end_loop:
             menu = "Enter...\n1 for Rock\n2 for Paper or\n3 for Scissors"
 
-            print(
+            console.print(
                 Panel.fit(
                     menu,
                     title="Please Select an Option",
                     style="bold green",
                     border_style="magenta",
                     padding=(1, 2),
-                )
+                ),
+                new_line_start=True,
             )
 
             user_choice = input("\nYour choice: ")
-            # user_choice = input(
-            #     "\nEnter...\n1 for Rock\n2 for Paper or\n3 for Scissors\n\n"
-            # )
 
             if user_choice not in ["1", "2", "3"]:
                 print("\nYou must enter 1,2 or 3\n")
@@ -47,7 +45,6 @@ def rock_paper_scissor(name):
 
             entered_choice = int(user_choice)
             computer_choice = int(choice("123"))
-            # print(computer_choice)
 
             console.print(
                 f"\nYou chose [cyan]{RPS(entered_choice).name}[/cyan]\nComputer chose [magenta]{RPS(computer_choice).name}[/magenta]"
@@ -66,11 +63,26 @@ def rock_paper_scissor(name):
                     return "You loose 🥲"
 
             check_winner = is_match()
-
-            print(check_winner)
+            style = (
+                "blue"
+                if "You Win" in check_winner
+                else "red" if "You loose" in check_winner else ""
+            )
+            console.print(check_winner, style=style)
 
             while True:
-                play_again = input("\nWanna play again?\nY for Yes or\nQ to Quit\n\n")
+                show = "\nWanna play again?\nY for Yes or\nQ to Quit"
+                console.print(
+                    Panel.fit(
+                        show,
+                        title="Please Select an Option",
+                        style="bold blue",
+                        border_style="yellow",
+                        padding=(0, 1),
+                    ),
+                    new_line_start=True,
+                )
+                play_again = input("\nYour choice : ")
                 if play_again.lower() not in ["y", "q"]:
                     print("\nYou must enter the above choices.")
                     continue
@@ -78,7 +90,7 @@ def rock_paper_scissor(name):
                     break
 
             if play_again.lower() == "y":
-                # os.system("cls" if os.name == "nt" else "clear")
+                os.system("cls" if os.name == "nt" else "clear")
                 run_game()
             else:
                 # os.system("cls" if os.name == "nt" else "clear")
