@@ -7,14 +7,21 @@ from rich import print
 from rich.console import Console
 from rich.spinner import Spinner
 import time
-from rich.live import Live
+from rich.markdown import Markdown
+from rich.align import Align
 
 
 def rock_paper_scissor(name):
 
     # print(name)
+    player_win = 0
+    computer_win = 0
+    total_game = 0
+    winning_ratio = 0
 
     def run_game():
+        nonlocal player_win, computer_win, total_game, winning_ratio
+
         console = Console()
         console.print()
 
@@ -54,18 +61,27 @@ def rock_paper_scissor(name):
             )
 
             def is_match() -> str:
+                nonlocal player_win, computer_win
+
                 if entered_choice == computer_choice:
                     return "Tie Game!"
                 elif entered_choice == 1 and computer_choice == 3:
+                    player_win += 1
                     return "You Win 🎉"
                 elif entered_choice == 2 and computer_choice == 1:
+                    player_win += 1
                     return "You Win 🎉"
                 elif entered_choice == 3 and computer_choice == 2:
+                    player_win += 1
                     return "You Win 🎉"
                 else:
+                    computer_win += 1
                     return "You loose 🥲"
 
             check_winner = is_match()
+            total_game += 1
+            winning_ratio = f"{player_win/total_game:.2%}"
+
             style = (
                 "blue"
                 if "You Win" in check_winner
@@ -73,6 +89,13 @@ def rock_paper_scissor(name):
             )
             console.print(check_winner, style=style)
 
+            MARKDOWN = f"""\n
+> Total Win: {player_win}\\
+> Winning Ratio: {winning_ratio}\\
+> Game Count: {total_game}\n
+            """
+            md = Markdown(MARKDOWN)
+            console.print(md)
             while True:
                 show = "\nWanna play again?\nY for Yes or\nQ to Quit"
                 console.print(
@@ -98,7 +121,7 @@ def rock_paper_scissor(name):
                 os.system("cls" if os.name == "nt" else "clear")
                 run_game()
             else:
-                # os.system("cls" if os.name == "nt" else "clear")
+                os.system("cls" if os.name == "nt" else "clear")
                 return
 
     return run_game
