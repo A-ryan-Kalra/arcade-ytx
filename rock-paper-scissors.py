@@ -32,7 +32,7 @@ def rock_paper_scissor(name):
                     menu,
                     title="Please Select an Option",
                     style="bold green",
-                    border_style="magenta",
+                    border_style="bold magenta",
                     padding=(1, 2),
                 ),
                 new_line_start=True,
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     run_game = rock_paper_scissor("Player_One" if args.name is None else args.name)
 
     if __name__ == "__main__":
-        print("\n")
+        # print("\n")
         # spinner = Spinner("aesthetic", text="Processing...")
         # with Live(spinner, refresh_per_second=3):
         #     time.sleep(5)
