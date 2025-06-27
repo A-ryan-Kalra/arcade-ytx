@@ -138,11 +138,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     run_game = rock_paper_scissor("Player_One" if args.name is None else args.name)
-
-    if __name__ == "__main__":
-        # print("\n")
-        # spinner = Spinner("aesthetic", text="Processing...")
-        # with Live(spinner, refresh_per_second=3):
-        #     time.sleep(5)
-
-        run_game()
+    # print("\n")
+    # spinner = Spinner("aesthetic", text="Processing...")
+    # with Live(spinner, refresh_per_second=3):
+    #     time.sleep(5)
+    run_game()
