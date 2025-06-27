@@ -22,6 +22,18 @@ class BankAccount:
                 "\nSorry, not enough balance to continue with the transaction.\n"
             )
 
+    def viable_transaction_current(self, amount, overdraft_limit):
+        if amount > self.balance:
+            if amount - self.balance <= overdraft_limit:
+                self.balance -= amount
+                print("\nWithdraw Completed...")
+                self.show_balance()
+            else:
+                raise BalanceException("\nInsufficient funds\n")
+        else:
+            self.balance -= amount
+            print("\nWithdraw Completed...")
+
     def withdraw_amount(self, amount):
         try:
             self.viable_transaction(amount)
@@ -38,7 +50,6 @@ class BankAccount:
             account.deposit(amount)
             print("\nTransfer Completed...")
             self.show_balance()
-            # account.show_balance()
         except BalanceException as error:
             print(error)
 
@@ -54,6 +65,7 @@ class InterestRewardAccount(BankAccount):
 class SavingsAccount(InterestRewardAccount):
     def __init__(self, name, initialAmount):
         self.fee = 5
+        self.type = "Savings"
         super().__init__(name, initialAmount)
 
     def withdraw_amount(self, amount):
@@ -66,13 +78,27 @@ class SavingsAccount(InterestRewardAccount):
             print(error)
 
 
+class CurrentAccount(BankAccount):
+    def __init__(self, name, initialAmount):
+        self.type = "Current"
+        self.overdraft_limit = 1000
+        super().__init__(name, initialAmount)
+
+    def withdraw_amount(self, amount):
+        try:
+            self.viable_transaction_current(amount, self.overdraft_limit)
+        except BalanceException as error:
+            print(error)
+
+
 if __name__ == "__main__":
-    aryan = BankAccount("Aryan Kalra", 1221)
+    aryan = CurrentAccount("Aryan Kalra", 1221)
     shubham = SavingsAccount("Shubham Kalra", 300)
     aryan.show_balance()
     # aryan.deposit(2000)
-    shubham.deposit(2000)
+    # shubham.deposit(2000)
     # aryan.show_balance()
-    shubham.withdraw_amount(2000)
+    aryan.withdraw_amount(2000)
+    aryan.withdraw_amount(2000)
     # aryan.transfer_amount(200, shubham)
     # aryan.withdraw_amount(2341)
