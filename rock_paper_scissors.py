@@ -46,7 +46,9 @@ def rock_paper_scissor(name):
             user_choice = input("\nYour choice: ")
 
             if user_choice not in ["1", "2", "3"]:
-                console.print("\nYou must enter 1,2 or 3\n", style="red bold on black")
+                console.print(
+                    "\nYou must enter 1,2 or 3\n", style="red bold on black underline"
+                )
                 continue
             else:
                 end_loop = False
@@ -109,7 +111,8 @@ def rock_paper_scissor(name):
                 play_again = input("\nYour choice : ")
                 if play_again.lower() not in ["y", "q"]:
                     console.print(
-                        "\nYou must enter the above choices.", style="red bold on black"
+                        "\nYou must enter the above choices.",
+                        style="red bold on black underline",
                     )
                     continue
                 else:
