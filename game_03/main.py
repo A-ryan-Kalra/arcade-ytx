@@ -2,6 +2,7 @@ from bank_account import *
 from rich.panel import Panel
 from rich import print
 from rich.console import Console
+import os
 
 
 def run_bank_account():
@@ -40,10 +41,27 @@ def run_bank_account():
         )
         initial_amount = input()
 
+    os.system("cls" if os.name == "nt" else "clear")
+
     if int(user_choice) == 1:
         SavingsAccount(user_name, int(initial_amount))
     elif int(user_choice) == 2:
         CurrentAccount(user_name, int(initial_amount))
+
+    menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount"
+    console.print(
+        Panel(
+            menu,
+            title="Please select a number",
+            style="bold green",
+            border_style="bold magenta",
+            padding=(0, 1),
+            width=48,
+        ),
+        new_line_start=True,
+        justify="left",
+    )
+    user_choice = input("\nYour choice: ")
 
 
 if __name__ == "__main__":
