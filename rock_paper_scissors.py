@@ -1,7 +1,6 @@
 from enum import Enum
 from random import choice
 import os
-from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
 from rich.panel import Panel
 from rich import print
 from rich.console import Console
@@ -20,10 +19,9 @@ def rock_paper_scissor(name):
     winning_ratio = 0
 
     def run_game():
-        nonlocal player_win, computer_win, total_game, winning_ratio
+        nonlocal player_win, computer_win, total_game, winning_ratio, name
 
         console = Console()
-        console.print()
 
         class RPS(Enum):
             ROCK = 1
