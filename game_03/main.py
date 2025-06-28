@@ -134,6 +134,50 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             os.system("cls" if os.name == "nt" else "clear")
             return account.transfer_amount(amount, transfer_acc)
 
+        case 5:
+            table = Table(title="List Of Accounts", min_width=50)
+            table.add_column("No", style="blue", justify="center")
+            table.add_column("Name", style="cyan")
+            table.add_column("Type", style="magenta")
+            table.add_column("Balance", style="green")
+
+            for index, user in enumerate(user_data):
+                acc = get_user(user_name=user)
+                table.add_row(
+                    str(index + 1) + ".",
+                    acc.name,
+                    acc.type,
+                    f"{acc.balance:.2f}",
+                )
+            console.print(Align.center(table, style="bold"))
+            return
+        case 6:
+            while True:
+                initial_amount, user_name, type = account_create(store_details).values()
+                print("chosen", type)
+                create_user(user_name, type, initial_amount)
+
+                fetch_info(5, account, store_details)
+
+                console.print(
+                    "Would you like to add more accounts? (y/n):  ",
+                    style="yellow bold",
+                )
+
+                while True:
+                    create_again = input("")
+                    if create_again.lower() not in ["y", "n"]:
+                        print("\nPlease enter (y/n) ")
+                        continue
+                    else:
+                        break
+                if create_again == "y":
+                    os.system("cls" if os.name == "nt" else "clear")
+                    continue
+                else:
+                    os.system("cls" if os.name == "nt" else "clear")
+                    break
+
 
 def account_create(store_details: list) -> dict:
 
@@ -174,11 +218,12 @@ def account_create(store_details: list) -> dict:
             console.print(
                 "Invalid input. Please enter a number: ", style="bold red on black"
             )
+    type = "Savings" if int(user_choice) == 1 else "Current"
     store_details.append(
         {
             "initial_amount": initial_amount,
             "user_name": user_name,
-            "type": "Savings" if int(user_choice) == 1 else "Current",
+            "type": type,
         }
     )
     return {
@@ -203,10 +248,10 @@ def bank_account_main():
         elif int(type) == 2:
             account = CurrentAccount(user_name, float(initial_amount))
 
-        create_user(user_name, type, initial_amount)
+        user_data[user_name] = account
 
         while True:
-            menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Exit"
+            menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Show All Acounts\t6. Create Account\n\n7. Exit"
             console.print(
                 Panel(
                     menu,
@@ -220,10 +265,10 @@ def bank_account_main():
                 justify="left",
             )
             while True:
-                user_choice = input("\nYour choice: ")
-                if user_choice not in ["1", "2", "3", "4", "5"]:
+                user_choice = int(input("\nYour choice: "))
+                if user_choice not in range(1, 8):
                     console.print(
-                        "You must enter 1,2,3,4 or 5", style="bold red on black"
+                        "You must enter 1,2,3,4,5,6 or 7", style="bold red on black"
                     )
                     continue
                 else:
@@ -231,9 +276,9 @@ def bank_account_main():
 
             entered_choice = int(user_choice)
 
-            if entered_choice >= 1 and entered_choice <= 4:
+            if entered_choice >= 1 and entered_choice <= 6:
                 fetch_info(entered_choice, account, store_details)
-            elif entered_choice == 5:
+            elif entered_choice == 7:
                 break
             else:
                 console.print("You must enter 1,2,3or 4", style="bold red on black")
@@ -244,8 +289,8 @@ def bank_account_main():
 if __name__ == "__main__":
     end_loop = True
     console = Console()
-    try:
-        exec_bank_account = bank_account_main()
-        exec_bank_account()
-    except Exception as error:
-        console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
+    # try:
+    exec_bank_account = bank_account_main()
+    exec_bank_account()
+    # except Exception as error:
+    # console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")

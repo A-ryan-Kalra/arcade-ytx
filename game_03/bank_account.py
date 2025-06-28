@@ -70,8 +70,7 @@ class InterestRewardAccount(BankAccount):
 class SavingsAccount(InterestRewardAccount):
     def __init__(self, name, initialAmount):
         self.fee = 1.01
-        self.type = "Savings"
-        super().__init__(name, initialAmount * 1.05)
+        super().__init__(name, initialAmount * 1.05, type="Savings")
 
     def withdraw_amount(self, amount):
         try:
@@ -87,9 +86,8 @@ class SavingsAccount(InterestRewardAccount):
 
 class CurrentAccount(BankAccount):
     def __init__(self, name, initialAmount):
-        self.type = "Current"
         self.overdraft_limit = 1000
-        super().__init__(name, initialAmount)
+        super().__init__(name, initialAmount, type="Current")
 
     def withdraw_amount(self, amount):
         try:
