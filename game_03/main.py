@@ -4,6 +4,8 @@ from rich import print
 from rich.console import Console
 import os
 from typing import Union
+from rich.table import Table
+from rich.align import Align
 
 
 def fetch_info(num, account: Union[BankAccount], store_details):
@@ -22,7 +24,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             amount = float(input(f"Enter amount: "))
             return account.withdraw_amount(amount)
         case 4:
-
+            table = Table(title="List Of Accounts", min_width=50)
             all_acounts = [
                 detail
                 for detail in store_details
@@ -71,7 +73,22 @@ def fetch_info(num, account: Union[BankAccount], store_details):
 
                 if entered_choice == "n":
                     return
-            print(all_acounts)
+
+            table.add_column("No", style="blue", justify="center")
+            table.add_column("Name", style="cyan")
+            table.add_column("Type", style="magenta")
+            table.add_column("Balance", style="green")
+
+            for index, user in enumerate(all_acounts):
+                table.add_row(
+                    str(index + 1) + ".",
+                    user.get("user_name"),
+                    user.get("type"),
+                    str(user.get("initial_amount")),
+                )
+
+            console.print(Align.center(table, style="bold"))
+
             menu = "\nPlease enter the amount you wish to transfer\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
@@ -121,13 +138,13 @@ def account_create(store_details: list) -> dict:
         {
             "initial_amount": initial_amount,
             "user_name": user_name,
-            "user_choice": user_choice,
+            "type": "Savings" if int(user_choice) == 1 else "Current",
         }
     )
     return {
         "initial_amount": initial_amount,
         "user_name": user_name,
-        "user_choice": user_choice,
+        "type": user_choice,
     }
 
 
@@ -137,13 +154,13 @@ def bank_account_main():
     def run_bank_account():
         nonlocal store_details
 
-        initial_amount, user_name, user_choice = account_create(store_details).values()
+        initial_amount, user_name, type = account_create(store_details).values()
 
         os.system("cls" if os.name == "nt" else "clear")
 
-        if int(user_choice) == 1:
+        if int(type) == 1:
             account = SavingsAccount(user_name, float(initial_amount))
-        elif int(user_choice) == 2:
+        elif int(type) == 2:
             account = CurrentAccount(user_name, float(initial_amount))
 
         while True:
@@ -189,7 +206,7 @@ if __name__ == "__main__":
         exec_bank_account = bank_account_main()
         exec_bank_account()
     except Exception as error:
-        console.print(f"Error occurred at: \n{error}", style="bold red on black")
+        console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
 
     # aryan = CurrentAccount("Aryan Kalra", 1221)
     # shubham = SavingsAccount("Shubham Kalra", 300)
