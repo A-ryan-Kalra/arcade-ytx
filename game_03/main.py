@@ -22,8 +22,57 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             amount = float(input(f"Enter amount: "))
             return account.withdraw_amount(amount)
         case 4:
-            menu = "\nPlease enter the amount you wish to transfer\n"
 
+            all_acounts = [
+                detail
+                for detail in store_details
+                if detail.get("user_name") != account.name
+            ]
+            if len(all_acounts) == 0:
+
+                console.print(
+                    "\nOops, you don't have anyone in your contact to transfer your amount with\n",
+                    style="green bold",
+                )
+                console.print(
+                    "Would you like to add more accounts? (y/n):  ", style="yellow bold"
+                )
+
+                while True:
+                    entered_choice = input("")
+                    if entered_choice.lower() not in ["y", "n"]:
+                        print("\nPlease enter (y/n) \n")
+                        continue
+                    else:
+                        break
+
+                while True:
+                    os.system("cls" if os.name == "nt" else "clear")
+                    account_create(store_details)
+                    console.print(
+                        "Would you like to add more accounts? (y/n):  ",
+                        style="yellow bold",
+                    )
+                    while True:
+                        add_account = input("")
+                        if add_account.lower() not in ["y", "n"]:
+                            print("\nPlease enter (y/n) \n")
+                            continue
+                        else:
+                            break
+                    if add_account.lower() == "n":
+                        os.system("cls" if os.name == "nt" else "clear")
+                        all_acounts = [
+                            detail
+                            for detail in store_details
+                            if detail.get("user_name") != account.name
+                        ]
+                        break
+
+                if entered_choice == "n":
+                    return
+            print(all_acounts)
+            menu = "\nPlease enter the amount you wish to transfer\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
             return account.transfer_amount(amount, account)
@@ -54,7 +103,7 @@ def account_create(store_details: list) -> dict:
         else:
             end_loop = False
 
-    console.print("\nPlease enter your name", style="bold magenta")
+    console.print("\nPlease enter name", style="bold magenta")
     user_name = input()
     console.print(
         "\nPlease enter the intial amount you want to deposit", style="bold yellow"
@@ -136,8 +185,12 @@ def bank_account_main():
 if __name__ == "__main__":
     end_loop = True
     console = Console()
-    exec_bank_account = bank_account_main()
-    exec_bank_account()
+    try:
+        exec_bank_account = bank_account_main()
+        exec_bank_account()
+    except Exception as error:
+        console.print(f"Error occurred at: \n{error}", style="bold red on black")
+
     # aryan = CurrentAccount("Aryan Kalra", 1221)
     # shubham = SavingsAccount("Shubham Kalra", 300)
     # aryan.show_balance()
