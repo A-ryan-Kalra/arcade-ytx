@@ -145,7 +145,7 @@ def bank_account_main():
             account = SavingsAccount(user_name, float(initial_amount))
         elif int(user_choice) == 2:
             account = CurrentAccount(user_name, float(initial_amount))
-        print(store_details)
+
         while True:
             menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Exit"
             console.print(

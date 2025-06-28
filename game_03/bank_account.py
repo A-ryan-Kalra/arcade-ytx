@@ -3,11 +3,12 @@ class BalanceException(Exception):
 
 
 class BankAccount:
-    def __init__(self, name, initialAmount):
+    def __init__(self, name, initialAmount, type="Savings"):
         self.name = name
         self.balance = initialAmount
+        self.type = type
         print(
-            f"\nAccount {self.name} created\nBalance = ${self.balance:,.2f}\nPlease note, a 5% interest has been applied 🎉\n"
+            f"\nAccount '{self.name}' created.\tType = '{self.type}'\nBalance = ${self.balance:,.2f}.\nPlease note, a 5% interest has been applied 🎉.\n"
         )
 
     def show_balance(self):
