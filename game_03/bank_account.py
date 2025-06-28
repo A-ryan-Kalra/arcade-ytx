@@ -6,7 +6,9 @@ class BankAccount:
     def __init__(self, name, initialAmount):
         self.name = name
         self.balance = initialAmount
-        print(f"\nAccount {self.name} created\nBalance = ${self.balance:,.2f}\n")
+        print(
+            f"\nAccount {self.name} created\nBalance = ${self.balance:,.2f}\nPlease note, a 5% interest has been applied 🎉\n"
+        )
 
     def show_balance(self):
         print(f"\nCurrent balance : ${self.balance:,.2f}\n")
@@ -58,21 +60,25 @@ class InterestRewardAccount(BankAccount):
 
     def deposit(self, amount):
         self.balance += amount * 1.05
-        print("\nDeposit Completed...")
+        print(
+            "\nDeposit Completed...\nPlease note, a 5% interest will be applied on each deposit 🎉\n"
+        )
         self.show_balance()
 
 
 class SavingsAccount(InterestRewardAccount):
     def __init__(self, name, initialAmount):
-        self.fee = 5
+        self.fee = 1.01
         self.type = "Savings"
-        super().__init__(name, initialAmount)
+        super().__init__(name, initialAmount * 1.05)
 
     def withdraw_amount(self, amount):
         try:
-            self.viable_transaction(amount + self.fee)
-            self.balance -= amount + self.fee
-            print("\nWithdraw Completed...")
+            self.viable_transaction(amount * self.fee)
+            self.balance -= amount * self.fee
+            print(
+                "\nWithdraw Completed...\nPlease note, a 1% interest fee has been charged\n"
+            )
             self.show_balance()
         except BalanceException as error:
             print(error)
