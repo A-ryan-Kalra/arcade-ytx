@@ -6,7 +6,7 @@ import os
 from typing import Union
 from rich.table import Table
 from rich.align import Align
-
+import sys
 
 user_data = {}
 
@@ -27,6 +27,7 @@ def get_user(user_name):
 
 
 def fetch_info(num, account: Union[BankAccount], store_details):
+
     os.system("cls" if os.name == "nt" else "clear")
     match num:
         case 1:
@@ -177,6 +178,43 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 else:
                     os.system("cls" if os.name == "nt" else "clear")
                     break
+        case 7:
+            fetch_info(5, account, store_details)
+
+            all_acounts = [
+                detail
+                for detail in store_details
+                if detail.get("user_name") != account.name
+            ]
+            if len(all_acounts) == 0:
+                print(
+                    "Oops, You don't have enough accounts,\nplease create more accounts and try again."
+                )
+                return account
+
+            console.print(
+                "\nPlease select the account via number to switch your account with\n"
+            )
+            while True:
+                switch_acc = int(input("\nYour choice\n")) - 1
+
+                if not switch_acc.is_integer():
+                    print("Please enter number only")
+                elif switch_acc < 0:
+                    print("Please enter number only")
+
+                if switch_acc not in range(0, len(all_acounts) + 1):
+                    console.print(
+                        f"\nPlease select the number between (1 - {len(all_acounts)+1})\n",
+                        style="bold red on black",
+                    )
+                    continue
+                else:
+                    break
+            get_acc = all_acounts[switch_acc - 1]
+            user_name = get_acc["user_name"]
+            account = user_data[user_name]
+            return account
 
 
 def account_create(store_details: list) -> dict:
@@ -251,7 +289,7 @@ def bank_account_main():
         user_data[user_name] = account
 
         while True:
-            menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Show All Acounts\t6. Create Account\n\n7. Exit"
+            menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Show All Acounts\t6. Create Account\n\n7. Switch Account\t8. Exit"
 
             console.print(
                 Panel(
@@ -267,9 +305,9 @@ def bank_account_main():
             )
             while True:
                 user_choice = int(input("\nYour choice: "))
-                if user_choice not in range(1, 8):
+                if user_choice not in range(1, 9):
                     console.print(
-                        "You must enter 1,2,3,4,5,6 or 7", style="bold red on black"
+                        "You must enter 1,2,3,4,5,6,7 or 8", style="bold red on black"
                     )
                     continue
                 else:
@@ -280,9 +318,13 @@ def bank_account_main():
             if entered_choice >= 1 and entered_choice <= 6:
                 fetch_info(entered_choice, account, store_details)
             elif entered_choice == 7:
+                account = fetch_info(entered_choice, account, store_details)
+            elif entered_choice == 8:
                 break
             else:
-                console.print("You must enter 1,2,3or 4", style="bold red on black")
+                console.print(
+                    "You must enter 1,2,3,4,5,6,7 or 8", style="bold red on black"
+                )
 
     return run_bank_account
 
@@ -290,8 +332,9 @@ def bank_account_main():
 if __name__ == "__main__":
     end_loop = True
     console = Console()
-    # try:
-    exec_bank_account = bank_account_main()
-    exec_bank_account()
-    # except Exception as error:
-    # console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
+    try:
+        exec_bank_account = bank_account_main()
+        exec_bank_account()
+    except Exception as error:
+        console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
+        sys.exit()
