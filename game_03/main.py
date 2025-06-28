@@ -252,10 +252,11 @@ def bank_account_main():
 
         while True:
             menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Show All Acounts\t6. Create Account\n\n7. Exit"
+
             console.print(
                 Panel(
                     menu,
-                    title="Please select a number",
+                    title=f"Hey {account.name.split(" ")[0]}, Please select a number",
                     style="bold green",
                     border_style="bold magenta",
                     padding=(0, 1),
