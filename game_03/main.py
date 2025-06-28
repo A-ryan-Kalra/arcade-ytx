@@ -8,6 +8,24 @@ from rich.table import Table
 from rich.align import Align
 
 
+user_data = {}
+
+
+def create_user(user_name, type, initial_amount):
+    if user_name not in user_data:
+        if int(type) == 1:
+            new_account = SavingsAccount(user_name, float(initial_amount))
+        elif int(type) == 2:
+            new_account = CurrentAccount(user_name, float(initial_amount))
+
+        user_data[user_name] = new_account
+        return user_data[user_name]
+
+
+def get_user(user_name):
+    return user_data.get(user_name)
+
+
 def fetch_info(num, account: Union[BankAccount], store_details):
     os.system("cls" if os.name == "nt" else "clear")
     match num:
@@ -48,9 +66,20 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     else:
                         break
 
+                if entered_choice == "n":
+                    return
+
                 while True:
                     os.system("cls" if os.name == "nt" else "clear")
-                    account_create(store_details)
+                    # account_create(store_details)
+                    initial_amount, user_name, type = account_create(
+                        store_details
+                    ).values()
+
+                    create_user(user_name, type, initial_amount)
+
+                    # os.system("cls" if os.name == "nt" else "clear")
+
                     console.print(
                         "Would you like to add more accounts? (y/n):  ",
                         style="yellow bold",
@@ -71,9 +100,6 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                         ]
                         break
 
-                if entered_choice == "n":
-                    return
-
             table.add_column("No", style="blue", justify="center")
             table.add_column("Name", style="cyan")
             table.add_column("Type", style="magenta")
@@ -88,11 +114,25 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 )
 
             console.print(Align.center(table, style="bold"))
+            while True:
+                select_acc = int(
+                    input(
+                        "\nPlease select the account via number to proceed with transfer.\n"
+                    )
+                )
+                if select_acc != 0 and select_acc <= len(all_acounts):
+                    break
+                else:
+                    continue
+
+            selected_user_name = all_acounts[select_acc - 1].get("user_name")
+            transfer_acc = get_user(user_name=selected_user_name)
 
             menu = "\nPlease enter the amount you wish to transfer\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
-            return account.transfer_amount(amount, account)
+            os.system("cls" if os.name == "nt" else "clear")
+            return account.transfer_amount(amount, transfer_acc)
 
 
 def account_create(store_details: list) -> dict:
@@ -163,6 +203,8 @@ def bank_account_main():
         elif int(type) == 2:
             account = CurrentAccount(user_name, float(initial_amount))
 
+        create_user(user_name, type, initial_amount)
+
         while True:
             menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Exit"
             console.print(
@@ -207,14 +249,3 @@ if __name__ == "__main__":
         exec_bank_account()
     except Exception as error:
         console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
-
-    # aryan = CurrentAccount("Aryan Kalra", 1221)
-    # shubham = SavingsAccount("Shubham Kalra", 300)
-    # aryan.show_balance()
-    # aryan.deposit(2000)
-    # shubham.deposit(2000)
-    # aryan.show_balance()
-    # aryan.withdraw_amount(2000)
-    # aryan.withdraw_amount(2000)
-    # aryan.transfer_amount(200, shubham)
-    # aryan.withdraw_amount(2341)
