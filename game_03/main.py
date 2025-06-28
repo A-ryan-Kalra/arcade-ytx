@@ -6,7 +6,7 @@ import os
 from typing import Union
 
 
-def fetch_info(num, account: Union[BankAccount]):
+def fetch_info(num, account: Union[BankAccount], store_details):
     os.system("cls" if os.name == "nt" else "clear")
     match num:
         case 1:
@@ -23,51 +23,72 @@ def fetch_info(num, account: Union[BankAccount]):
             return account.withdraw_amount(amount)
         case 4:
             menu = "\nPlease enter the amount you wish to transfer\n"
+
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
             return account.transfer_amount(amount, account)
 
 
+def account_create(store_details: list) -> dict:
+
+    end_loop = True
+    while end_loop:
+        menu = "\n1 For Savings Account\n\n2 For Current Account"
+        console.print(
+            Panel.fit(
+                menu,
+                title="Please choose account",
+                style="bold green",
+                border_style="bold magenta",
+                padding=(0, 1),
+            ),
+            new_line_start=True,
+        )
+        user_choice = input("\nYour choice: ")
+
+        if user_choice not in ["1", "2"]:
+            console.print(
+                "\nYou must enter 1 or 2\n", style="red bold on black underline"
+            )
+            continue
+        else:
+            end_loop = False
+
+    console.print("\nPlease enter your name", style="bold magenta")
+    user_name = input()
+    console.print(
+        "\nPlease enter the intial amount you want to deposit", style="bold yellow"
+    )
+
+    while True:
+        try:
+            initial_amount = float(input())
+            break
+        except ValueError:
+            console.print(
+                "Invalid input. Please enter a number: ", style="bold red on black"
+            )
+    store_details.append(
+        {
+            "initial_amount": initial_amount,
+            "user_name": user_name,
+            "user_choice": user_choice,
+        }
+    )
+    return {
+        "initial_amount": initial_amount,
+        "user_name": user_name,
+        "user_choice": user_choice,
+    }
+
+
 def bank_account_main():
+    store_details = []
 
     def run_bank_account():
-        end_loop = True
-        while end_loop:
-            menu = "\n1 For Savings Account\n\n2 For Current Account"
-            console.print(
-                Panel.fit(
-                    menu,
-                    title="Please choose account",
-                    style="bold green",
-                    border_style="bold magenta",
-                    padding=(0, 1),
-                ),
-                new_line_start=True,
-            )
-            user_choice = input("\nYour choice: ")
+        nonlocal store_details
 
-            if user_choice not in ["1", "2"]:
-                console.print(
-                    "\nYou must enter 1 or 2\n", style="red bold on black underline"
-                )
-                continue
-            else:
-                end_loop = False
-
-        console.print("\nPlease enter your name", style="bold magenta")
-        user_name = input()
-        console.print(
-            "\nPlease enter the intial amount you want to deposit", style="bold yellow"
-        )
-
-        while True:
-            try:
-                initial_amount = float(input())
-                break
-            except ValueError:
-                console.print(
-                    "Invalid input. Please enter a number: ", style="bold red on black"
-                )
+        initial_amount, user_name, user_choice = account_create(store_details).values()
 
         os.system("cls" if os.name == "nt" else "clear")
 
@@ -75,7 +96,7 @@ def bank_account_main():
             account = SavingsAccount(user_name, float(initial_amount))
         elif int(user_choice) == 2:
             account = CurrentAccount(user_name, float(initial_amount))
-
+        print(store_details)
         while True:
             menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Exit"
             console.print(
@@ -103,7 +124,7 @@ def bank_account_main():
             entered_choice = int(user_choice)
 
             if entered_choice >= 1 and entered_choice <= 4:
-                fetch_info(entered_choice, account)
+                fetch_info(entered_choice, account, store_details)
             elif entered_choice == 5:
                 break
             else:
