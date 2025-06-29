@@ -150,7 +150,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     str(index + 1) + ".",
                     user.get("user_name"),
                     user.get("type"),
-                    f"{user.get("initial_amount"):.2f}",
+                    f"{user.get('initial_amount'):.2f}",
                 )
 
             console.print(Align.center(table, style="bold"))
@@ -199,7 +199,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     str(index + 1) + ".",
                     user.get("user_name"),
                     user.get("type"),
-                    f"{user.get("initial_amount"):.2f}",
+                    f"{user.get('initial_amount'):.2f}",
                 )
             console.print(Align.center(table, style="bold"))
             return
@@ -254,12 +254,14 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 "\nPlease select the account via number to switch your account with\n"
             )
             while True:
-                switch_acc = int(input("\nYour choice\n")) - 1
+                try:
+                    switch_acc = int(input("\nYour choice\n")) - 1
 
-                if not switch_acc.is_integer():
-                    print("Please enter number only")
-                elif switch_acc < 0:
-                    print("Please enter number only")
+                    if switch_acc < 0:
+                        print("Please enter number only")
+                except:
+                    print("Please enter a valid number")
+                    continue
 
                 if switch_acc not in range(0, len(all_acounts)):
                     console.print(
@@ -300,19 +302,21 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     str(index + 1) + ".",
                     user.get("user_name"),
                     user.get("type"),
-                    f"{user.get("initial_amount"):.2f}",
+                    f"{user.get('initial_amount'):.2f}",
                 )
             console.print(Align.center(table, style="bold"))
             console.print(
                 "\nPlease select the account via number to delete the account\n"
             )
             while True:
-                switch_acc = int(input("\nYour choice\n")) - 1
+                try:
+                    switch_acc = int(input("\nYour choice\n")) - 1
 
-                if not switch_acc.is_integer():
-                    print("Please enter number only")
-                elif switch_acc < 0:
-                    print("Please enter number only")
+                    if switch_acc < 0:
+                        print("Please enter number only")
+                except:
+                    print("Please enter a valid number")
+                    continue
 
                 if switch_acc not in range(0, len(all_acounts)):
                     console.print(
@@ -440,7 +444,7 @@ def bank_account_main():
                     str(index + 1) + ".",
                     user.get("user_name"),
                     user.get("type"),
-                    f"{user.get("initial_amount"):.2f}",
+                    f"{user.get('initial_amount'):.2f}",
                 )
             console.print(Align.center(table, style="bold"))
 
@@ -475,7 +479,7 @@ def bank_account_main():
             console.print(
                 Panel(
                     menu,
-                    title=f"Hey {account.name.split(" ")[0]}, Please select a number",
+                    title=f"Hey {account.name.split(' ')[0]}, Please select a number",
                     style="bold green",
                     border_style="bold magenta",
                     padding=(0, 1),
