@@ -60,6 +60,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 detail
                 for detail in store_details
                 if detail.get("user_name") != account.name
+                or detail.get("type") != account.type
             ]
             if len(all_acounts) == 0:
 
@@ -142,14 +143,24 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     continue
 
             selected_user_name = all_acounts[select_acc - 1].get("user_name")
-            type = all_acounts[select_acc - 1].get("type")
-            transfer_acc = get_user(user_name=selected_user_name + type)
+            type = 1 if all_acounts[select_acc - 1].get("type") == "Savings" else 2
+            transfer_acc = get_user(user_name=selected_user_name + str(type))
 
             menu = "\nPlease enter the amount you wish to transfer\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
             os.system("cls" if os.name == "nt" else "clear")
-            return account.transfer_amount(amount, transfer_acc)
+
+            account.transfer_amount(amount, transfer_acc)
+
+            for account in store_details:
+                if (
+                    account["user_name"] == transfer_acc.name
+                    and account["type"] == transfer_acc.type
+                ):
+                    account["initial_amount"] = transfer_acc.balance
+
+            return
 
         case 5:
             table = Table(title="List Of Accounts", min_width=50)
