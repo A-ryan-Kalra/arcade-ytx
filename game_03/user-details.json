@@ -1,0 +1,16 @@
+{
+  "user-list": {
+    "aryan1": {
+      "name": "aryan",
+      "type": "Savings",
+      "balance": 1260.0
+    }
+  },
+  "store-data": [
+    {
+      "initial_amount": 1260.0,
+      "user_name": "aryan",
+      "type": "Savings"
+    }
+  ]
+}

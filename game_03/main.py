@@ -28,7 +28,7 @@ def read_data(key):
                 combined = json.load(of)
                 return combined[key]
             except Exception as error:
-                print("No data exists: ", error)
+                # print("No data exist\nLet's create your account!")
                 combined = {}
 
 
@@ -166,16 +166,24 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     continue
 
             selected_user_name = all_acounts[select_acc - 1].get("user_name")
-            type = all_acounts[select_acc - 1].get("type")
-            transfer_acc = get_user(user_name=selected_user_name + type)
+            type = 1 if all_acounts[select_acc - 1].get("type") == "Savings" else 2
+            transfer_acc = get_user(user_name=selected_user_name + str(type))
 
             menu = "\nPlease enter the amount you wish to transfer\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
             os.system("cls" if os.name == "nt" else "clear")
-            print(account)
-            print(transfer_acc)
-            # return account.transfer_amount(amount, transfer_acc)
+
+            account.transfer_amount(amount, transfer_acc)
+
+            for account in store_details:
+                if (
+                    account["user_name"] == transfer_acc.name
+                    and account["type"] == transfer_acc.type
+                ):
+                    account["initial_amount"] = transfer_acc.balance
+
+            return
 
         case 5:
             table = Table(title="List Of Accounts", min_width=50)
@@ -321,8 +329,9 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 detail for detail in store_details if detail["user_name"] != user_name
             ]
             type = 1 if get_acc["type"] == "Savings" else 2
+
             del user_data[user_name + str(type)]
-            all_data.pop(user_name + type)
+            all_data.pop(user_name + str(type))
             write_data("user-list", all_data)
             write_data("store-data", store_details)
             return store_details
@@ -506,6 +515,9 @@ if __name__ == "__main__":
     console = Console()
     try:
         user_data = (
+            read_data("user-list") if type(read_data("user-list")) is dict else {}
+        )
+        all_data = (
             read_data("user-list") if type(read_data("user-list")) is dict else {}
         )
         # print("user_data=", user_data)

@@ -1,3 +1,6 @@
+import json
+
+
 class BalanceException(Exception):
     pass
 
@@ -10,6 +13,9 @@ class BankAccount:
         print(
             f"\nAccount '{self.name}' created.\tType = '{self.type}'\nBalance = ${self.balance:,.2f}.\nPlease note, a 5% interest has been applied 🎉.\n"
         )
+
+    def to_dict(self):
+        return {"name": self.name, "type": self.type, "balance": self.balance}
 
     def show_balance(self):
         print(f"\nCurrent balance : ${self.balance:,.2f}\n")
