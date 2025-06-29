@@ -7,8 +7,29 @@ from typing import Union
 from rich.table import Table
 from rich.align import Align
 import sys
+import os
+import json
 
 user_data = {}
+combined = {}
+all_data = {}
+
+
+def write_data(key, value):
+    combined.update({key: value})
+    with open("user-details.json", "w") as of:
+        json.dump(combined, of, indent=2)
+
+
+def read_data(key):
+    if os.path.exists("user-details.json"):
+        with open("user-details.json") as of:
+            try:
+                combined = json.load(of)
+                return combined[key]
+            except Exception as error:
+                print("No data exists: ", error)
+                combined = {}
 
 
 def create_user(user_name, type, initial_amount):
@@ -30,6 +51,8 @@ def create_user(user_name, type, initial_amount):
                 new_account = CurrentAccount(user_name, float(initial_amount))
 
     user_data[user_name + type] = new_account
+    all_data[user_name + type] = new_account.to_dict()
+    write_data("user-list", all_data)
 
     return user_data[user_name + type]
 
@@ -60,6 +83,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 detail
                 for detail in store_details
                 if detail.get("user_name") != account.name
+                or detail.get("type") != account.type
             ]
             if len(all_acounts) == 0:
 
@@ -149,7 +173,9 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
             os.system("cls" if os.name == "nt" else "clear")
-            return account.transfer_amount(amount, transfer_acc)
+            print(account)
+            print(transfer_acc)
+            # return account.transfer_amount(amount, transfer_acc)
 
         case 5:
             table = Table(title="List Of Accounts", min_width=50)
@@ -296,6 +322,9 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             ]
             type = 1 if get_acc["type"] == "Savings" else 2
             del user_data[user_name + str(type)]
+            all_data.pop(user_name + type)
+            write_data("user-list", all_data)
+            write_data("store-data", store_details)
             return store_details
 
 
@@ -357,6 +386,9 @@ def account_create(store_details: list) -> dict:
             "type": type,
         }
     )
+
+    write_data("store-data", store_details)
+
     return {
         "initial_amount": initial_amount,
         "user_name": user_name,
@@ -366,20 +398,61 @@ def account_create(store_details: list) -> dict:
 
 def bank_account_main():
     store_details = []
+    store_details = (
+        read_data("store-data") if type(read_data("store-data")) is list else []
+    )
 
     def run_bank_account():
         nonlocal store_details
+        if len(user_data) == 0:
+            initial_amount, user_name, type = account_create(store_details).values()
 
-        initial_amount, user_name, type = account_create(store_details).values()
+            os.system("cls" if os.name == "nt" else "clear")
 
+            if int(type) == 1:
+                account = SavingsAccount(user_name, float(initial_amount))
+            elif int(type) == 2:
+                account = CurrentAccount(user_name, float(initial_amount))
+
+            user_data[user_name + type] = account
+            all_data[user_name + type] = account.to_dict()
+            write_data("user-list", all_data)
+        else:
+            table = Table(title="List Of Accounts", min_width=50)
+            table.add_column("No", style="blue", justify="center")
+            table.add_column("Name", style="cyan")
+            table.add_column("Type", style="magenta")
+            table.add_column("Balance", style="green")
+
+            all_acounts = store_details
+
+            for index, user in enumerate(all_acounts):
+                table.add_row(
+                    str(index + 1) + ".",
+                    user.get("user_name"),
+                    user.get("type"),
+                    f"{user.get("initial_amount"):.2f}",
+                )
+            console.print(Align.center(table, style="bold"))
+
+            while True:
+                selec_acc = int(input("Your choice :")) - 1
+                if selec_acc not in range(0, len(store_details)):
+                    console.print(
+                        f"You must enter 1 - ({len(store_details)})",
+                        style="bold red on black",
+                    )
+                    continue
+                else:
+                    break
+
+            acc = all_acounts[selec_acc]
+
+            if (acc["type"]) == "Savings":
+                account = SavingsAccount(acc["user_name"], float(acc["initial_amount"]))
+            else:
+                account = CurrentAccount(acc["user_name"], float(acc["initial_amount"]))
         os.system("cls" if os.name == "nt" else "clear")
-
-        if int(type) == 1:
-            account = SavingsAccount(user_name, float(initial_amount))
-        elif int(type) == 2:
-            account = CurrentAccount(user_name, float(initial_amount))
-
-        user_data[user_name + type] = account
 
         while True:
             menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Show All Acounts\t6. Create Account\n\n7. Switch Account\t8. Delete Accounts\n\n9. Exit"
@@ -432,6 +505,10 @@ if __name__ == "__main__":
     end_loop = True
     console = Console()
     try:
+        user_data = (
+            read_data("user-list") if type(read_data("user-list")) is dict else {}
+        )
+        # print("user_data=", user_data)
         exec_bank_account = bank_account_main()
         exec_bank_account()
     except Exception as error:
