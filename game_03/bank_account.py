@@ -1,3 +1,6 @@
+import json
+
+
 class BalanceException(Exception):
     pass
 
@@ -11,8 +14,11 @@ class BankAccount:
             f"\nAccount '{self.name}' created.\tType = '{self.type}'\nBalance = ${self.balance:,.2f}.\nPlease note, a 5% interest has been applied 🎉.\n"
         )
 
+    def to_dict(self):
+        return {"name": self.name, "type": self.type, "balance": self.balance}
+
     def show_balance(self):
-        print(f"\nCurrent balance : ${self.balance:,.2f}\n")
+        print(f"\nCurrent balance '{self.name}': ${self.balance:,.2f}\n")
 
     def deposit(self, amount):
         self.balance += amount
@@ -51,7 +57,7 @@ class BankAccount:
             self.viable_transaction(amount)
             self.balance -= amount
             account.deposit(amount)
-            print("\nTransfer Completed...")
+            print(f"\nTransfer Completed...\nCurrent balance '{self.name}': ")
             self.show_balance()
         except BalanceException as error:
             print(error)
