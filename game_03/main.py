@@ -445,7 +445,13 @@ def bank_account_main():
             console.print(Align.center(table, style="bold"))
 
             while True:
-                selec_acc = int(input("Your choice :")) - 1
+                selec_acc = input("Your choice :")
+                if selec_acc.isdigit():
+                    selec_acc = int(selec_acc) - 1
+                else:
+                    print("That's not a valid number.")
+                    continue
+
                 if selec_acc not in range(0, len(store_details)):
                     console.print(
                         f"You must enter 1 - ({len(store_details)})",
@@ -464,7 +470,7 @@ def bank_account_main():
         os.system("cls" if os.name == "nt" else "clear")
 
         while True:
-            menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Show All Acounts\t6. Create Account\n\n7. Switch Account\t8. Delete Accounts\n\n9. Exit"
+            menu = "\n1. Show Balance\t\t2. Deposit Amount\n\n3. Withdraw Amount\t4. Transfer Amount\n\n5. Show All Accounts\t6. Create Account\n\n7. Switch Account\t8. Delete Accounts\n\n9. Exit"
 
             console.print(
                 Panel(
@@ -514,13 +520,22 @@ if __name__ == "__main__":
     end_loop = True
     console = Console()
     try:
-        user_data = (
-            read_data("user-list") if type(read_data("user-list")) is dict else {}
-        )
+        # user_data = (
+        #     read_data("user-list") if type(read_data("user-list")) is dict else {}
+        # )
         all_data = (
             read_data("user-list") if type(read_data("user-list")) is dict else {}
         )
-        # print("user_data=", user_data)
+
+        for item in all_data.values():
+            if item.get("type") == "Savings":
+                account = SavingsAccount(item.get("name"), float(item.get("balance")))
+            else:
+                account = CurrentAccount(item.get("name"), float(item.get("balance")))
+            types = 1 if account.type == "Savings" else 2
+            user_data[item.get("name") + str(types)] = account
+            # print("user_data=", user_data)
+        os.system("cls" if os.name == "nt" else "clear")
         exec_bank_account = bank_account_main()
         exec_bank_account()
     except Exception as error:

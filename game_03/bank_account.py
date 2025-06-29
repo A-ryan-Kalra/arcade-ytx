@@ -18,7 +18,7 @@ class BankAccount:
         return {"name": self.name, "type": self.type, "balance": self.balance}
 
     def show_balance(self):
-        print(f"\nCurrent balance : ${self.balance:,.2f}\n")
+        print(f"\nCurrent balance '{self.name}': ${self.balance:,.2f}\n")
 
     def deposit(self, amount):
         self.balance += amount
@@ -57,7 +57,7 @@ class BankAccount:
             self.viable_transaction(amount)
             self.balance -= amount
             account.deposit(amount)
-            print("\nTransfer Completed...")
+            print(f"\nTransfer Completed...\nCurrent balance '{self.name}': ")
             self.show_balance()
         except BalanceException as error:
             print(error)
