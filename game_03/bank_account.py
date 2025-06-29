@@ -57,7 +57,7 @@ class BankAccount:
             self.viable_transaction(amount)
             self.balance -= amount
             account.deposit(amount)
-            print(f"\nTransfer Completed...\nCurrent balance '{self.name}': ")
+            print(f"\nTransfer Completed...")
             self.show_balance()
         except BalanceException as error:
             print(error)

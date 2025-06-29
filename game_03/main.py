@@ -183,6 +183,10 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 ):
                     account["initial_amount"] = transfer_acc.balance
 
+            console.print(
+                "Please select option 5(Show All Accounts) to verify the reflected changes",
+                style="bold blue",
+            )
             return
 
         case 5:
