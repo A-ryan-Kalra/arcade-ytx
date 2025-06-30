@@ -97,8 +97,17 @@ def switch_player():
         player = "X"
 
 
+def check_tie(board):
+    global game_running
+    if "-" not in board:
+        game_running = False
+        print_board(board)
+        print("\nIt's a tie!\n")
+
+
 while game_running:
     print_board(board)
     enter_choice(board)
     check_winner(board)
     switch_player()
+    check_tie(board)
