@@ -1,4 +1,5 @@
 import os
+import random
 
 board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
 game_running = True
@@ -35,17 +36,14 @@ def check_horizontal(board):
     if board[0] == board[1] == board[2] and board[0] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
     elif board[3] == board[4] == board[5] and board[3] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
     elif board[6] == board[7] == board[8] and board[6] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
 
 
@@ -54,12 +52,10 @@ def check_diagonal(board):
     if board[0] == board[4] == board[8] and board[0] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
     elif board[2] == board[4] == board[6] and board[2] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
 
 
@@ -69,24 +65,23 @@ def check_vertical(board):
     if board[0] == board[3] == board[6] and board[0] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
     if board[1] == board[4] == board[7] and board[1] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
     if board[2] == board[5] == board[8] and board[2] != "-":
         winner = player
         print_board(board)
-        print(f"\nWinner is player {player}\n")
         return True
 
 
 def check_winner(board):
     global game_running
     if check_horizontal(board) or check_diagonal(board) or check_vertical(board):
+        print(f"\nWinner is player {player}\n")
         game_running = False
+        return True
 
 
 def switch_player():
@@ -105,9 +100,20 @@ def check_tie(board):
         print("\nIt's a tie!\n")
 
 
+def computer_choice(board):
+    while player == "O":
+        position = random.randint(0, 8)
+        if board[position] == "-":
+            board[position] = player
+            check_winner(board)
+            switch_player()
+
+
 while game_running:
     print_board(board)
     enter_choice(board)
-    check_winner(board)
-    switch_player()
+    if check_winner(board):
+        break
     check_tie(board)
+    switch_player()
+    computer_choice(board)
