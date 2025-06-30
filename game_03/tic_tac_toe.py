@@ -20,7 +20,7 @@ def enter_choice(board):
         inp = input(f"\nPlayer {player}, Please enter your choice (1-9): ")
 
         if not (inp.isdecimal()):
-            print("\nPlayer {player}, Please enter valid number")
+            print("\nPlease enter valid number")
         elif int(inp) < 0 or int(inp) > 9:
             print("\nPlayer {player}, Please enter between (1 - 9): ")
         elif int(inp) > 0 and int(inp) <= 9 and board[int(inp) - 1] == "-":
@@ -89,7 +89,16 @@ def check_winner(board):
         game_running = False
 
 
+def switch_player():
+    global player
+    if player == "X":
+        player = "O"
+    else:
+        player = "X"
+
+
 while game_running:
     print_board(board)
     enter_choice(board)
     check_winner(board)
+    switch_player()
