@@ -22,14 +22,15 @@ def write_data(key, value):
 
 
 def read_data(key):
+    global combined
     if os.path.exists("user-details.json"):
         with open("user-details.json") as of:
             try:
                 combined = json.load(of)
                 return combined[key]
             except Exception as error:
-                # print("No data exist\nLet's create your account!")
-                combined = {}
+                print("No data exist\nLet's create your account!")
+                # combined = {}
 
 
 def create_user(user_name, type, initial_amount):
@@ -71,13 +72,42 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             menu = "\nPlease enter the amount you wish to deposit\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
-            return account.deposit(amount)
+            account.deposit(amount)
+            acc_type = 1 if account.type == "Savings" else 2
+
+            for detail in store_details:
+                if (
+                    detail["user_name"] == account.name
+                    and detail["type"] == account.type
+                ):
+                    detail["initial_amount"] = account.balance
+
+            user_data[account.name + str(acc_type)] = account
+            all_data[account.name + str(acc_type)] = account.to_dict()
+
+            write_data("user-list", all_data)
+            return
         case 3:
             menu = "\nPlease enter the amount you wish to withdraw\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
-            return account.withdraw_amount(amount)
+            account.withdraw_amount(amount)
+            acc_type = 1 if account.type == "Savings" else 2
+
+            for detail in store_details:
+                if (
+                    detail["user_name"] == account.name
+                    and detail["type"] == account.type
+                ):
+                    detail["initial_amount"] = account.balance
+
+            user_data[account.name + str(acc_type)] = account
+            all_data[account.name + str(acc_type)] = account.to_dict()
+
+            write_data("user-list", all_data)
+            return
         case 4:
+
             table = Table(title="List Of Accounts", min_width=50)
             all_acounts = [
                 detail
@@ -175,18 +205,29 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             os.system("cls" if os.name == "nt" else "clear")
 
             account.transfer_amount(amount, transfer_acc)
+            print("store_details 1", store_details)
 
-            for account in store_details:
+            for detail in store_details:
                 if (
-                    account["user_name"] == transfer_acc.name
-                    and account["type"] == transfer_acc.type
+                    detail["user_name"] == transfer_acc.name
+                    and detail["type"] == transfer_acc.type
                 ):
-                    account["initial_amount"] = transfer_acc.balance
+                    detail["initial_amount"] = transfer_acc.balance
+            print("store_details 2", store_details)
 
             console.print(
                 "Please select option 5(Show All Accounts) to verify the reflected changes",
                 style="bold blue",
             )
+            acc_type = 1 if account.type == "Savings" else 2
+
+            user_data[account.name + str(acc_type)] = account
+            user_data[transfer_acc.name + str(type)] = transfer_acc
+            all_data[transfer_acc.name + str(type)] = transfer_acc.to_dict()
+            all_data[account.name + str(acc_type)] = account.to_dict()
+
+            print("\nAll Data", all_data)
+            write_data("user-list", all_data)
             return
 
         case 5:
@@ -238,6 +279,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                         break
                 except Exception as error:
                     print(error)
+            return
         case 7:
             all_acounts = [
                 detail
@@ -414,13 +456,14 @@ def account_create(store_details: list) -> dict:
 
 
 def bank_account_main():
-    store_details = []
+    # store_details = []
     store_details = (
         read_data("store-data") if type(read_data("store-data")) is list else []
     )
 
     def run_bank_account():
         nonlocal store_details
+
         if len(user_data) == 0:
             initial_amount, user_name, type = account_create(store_details).values()
 
@@ -471,10 +514,10 @@ def bank_account_main():
 
             acc = all_acounts[selec_acc]
 
-            if (acc["type"]) == "Savings":
-                account = SavingsAccount(acc["user_name"], float(acc["initial_amount"]))
-            else:
-                account = CurrentAccount(acc["user_name"], float(acc["initial_amount"]))
+            types = 1 if acc["type"] == "Savings" else 2
+
+            account = user_data[acc["user_name"] + str(types)]
+
         os.system("cls" if os.name == "nt" else "clear")
 
         while True:
@@ -495,9 +538,7 @@ def bank_account_main():
             while True:
                 user_choice = int(input("\nYour choice: "))
                 if user_choice not in range(1, 10):
-                    console.print(
-                        "You must enter 1,2,3,4,5,6,7,8 or 9", style="bold red on black"
-                    )
+                    console.print("You must enter (1 - 9)", style="bold red on black")
                     continue
                 else:
                     break
@@ -517,9 +558,7 @@ def bank_account_main():
             elif entered_choice == 9:
                 break
             else:
-                console.print(
-                    "You must enter 1,2,3,4,5,6,7 or 8", style="bold red on black"
-                )
+                console.print(f"You must enter (1 - 9)", style="bold red on black")
 
     return run_bank_account
 
@@ -528,9 +567,7 @@ if __name__ == "__main__":
     end_loop = True
     console = Console()
     try:
-        # user_data = (
-        #     read_data("user-list") if type(read_data("user-list")) is dict else {}
-        # )
+
         all_data = (
             read_data("user-list") if type(read_data("user-list")) is dict else {}
         )
