@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: arcade-ytx
-Version: 0.4
+Version: 0.5
 Summary: 😎 Bring back retro arcade vibes with this Python game pack! All addictive gameplay built with love (and the rich library).
 Author-email: Aryan Kalra <aryan.kalra363@gmail.com>
 License: MIT
@@ -16,3 +16,4 @@ Requires-Dist: markdown-it-py==3.0.0
 Requires-Dist: mdurl==0.1.2
 Requires-Dist: Pygments==2.19.2
 Requires-Dist: rich==14.0.0
+Requires-Dist: pyfiglet

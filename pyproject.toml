@@ -1,7 +1,7 @@
  
 [project]
 name = "arcade-ytx"
-version = "0.4"
+version = "0.5"
 description = "😎 Bring back retro arcade vibes with this Python game pack! All addictive gameplay built with love (and the rich library)."
 readme = "README.md"
 requires-python = ">=3.7"
@@ -21,7 +21,8 @@ dependencies = [
   "markdown-it-py==3.0.0",
   "mdurl==0.1.2",
   "Pygments==2.19.2",
-  "rich==14.0.0"
+  "rich==14.0.0",
+  "pyfiglet"
 ]
 
 [project.urls]
