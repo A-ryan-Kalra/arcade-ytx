@@ -1,11 +1,18 @@
 from game_01.rock_paper_scissors import rock_paper_scissor
 from game_02.guess_number import guess_number
 from game_03.tic_tac_toe import tic_tac_toe
-from game_04.main import bank_account_main
+from game_04.main import (
+    bank_account_main,
+    read_data,
+    SavingsAccount,
+    CurrentAccount,
+    user_data,
+)
 import pyfiglet
 from rich.console import Console
 from rich.panel import Panel
 import os
+import sys
 
 console = Console()
 font = pyfiglet.figlet_format(
@@ -61,7 +68,26 @@ def show_menu():
 
         elif entered_choice == 4:
             print("entered_choice, account, store_details")
+            all_data = (
+                read_data("user-list") if type(read_data("user-list")) is dict else {}
+            )
 
+            for item in all_data.values():
+                if item.get("type") == "Savings":
+                    account = SavingsAccount(
+                        item.get("name"), float(item.get("balance"))
+                    )
+                else:
+                    account = CurrentAccount(
+                        item.get("name"), float(item.get("balance"))
+                    )
+                types = 1 if account.type == "Savings" else 2
+                user_data[item.get("name") + str(types)] = account
+            os.system("cls" if os.name == "nt" else "clear")
+
+            exec_bank_account = bank_account_main(user_data, all_data)
+            exec_bank_account()
+            os.system("cls" if os.name == "nt" else "clear")
         elif entered_choice == 5:
             break
         else:
@@ -70,5 +96,9 @@ def show_menu():
 
 if __name__ == "__main__":
     os.system("cls" if os.name == "nt" else "clear")
-    console.print(f"[green bold]{font}[/green bold]")
-    show_menu()
+    try:
+        console.print(f"[green bold]{font}[/green bold]")
+        show_menu()
+    except Exception as error:
+        console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
+        sys.exit()

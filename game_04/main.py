@@ -15,6 +15,8 @@ import time
 user_data = {}
 combined = {}
 all_data = {}
+end_loop = True
+console = Console()
 
 
 def write_data(key, value):
@@ -109,6 +111,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             menu = "\nPlease enter the amount you wish to withdraw\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
+            show_progress_bar(0.2)
             account.withdraw_amount(amount)
             acc_type = 1 if account.type == "Savings" else 2
 
@@ -346,6 +349,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             user_name = get_acc["user_name"]
             type = 1 if get_acc["type"] == "Savings" else 2
             account = user_data[user_name + str(type)]
+            console.print(f"\nAccount switched to: {user_name}/{get_acc["type"]}")
             return account
         case 8:
             all_acounts = [
@@ -410,10 +414,14 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             ]
             type = 1 if get_acc["type"] == "Savings" else 2
             show_progress_bar(0.2)
+            key = user_name + str(type)
+            if key in all_data:
+                all_data.pop(key)
+            else:
+                print(f"{user_name} does not exist.")
             print(f"\nAccount deleted: {user_name}/{get_acc["type"]}")
-
             del user_data[user_name + str(type)]
-            all_data.pop(user_name + str(type))
+            # all_data.pop(user_name + str(type))
             write_data("user-list", all_data)
             write_data("store-data", store_details)
             return store_details
@@ -487,8 +495,11 @@ def account_create(store_details: list) -> dict:
     }
 
 
-def bank_account_main():
+def bank_account_main(user_dat, all_dat):
     # store_details = []
+    global user_data, all_data
+    user_data = user_dat
+    all_data = all_dat
     store_details = (
         read_data("store-data") if type(read_data("store-data")) is list else []
     )
@@ -601,8 +612,6 @@ def bank_account_main():
 
 
 if __name__ == "__main__":
-    end_loop = True
-    console = Console()
     try:
 
         all_data = (
@@ -618,7 +627,7 @@ if __name__ == "__main__":
             user_data[item.get("name") + str(types)] = account
             # print("user_data=", user_data)
         os.system("cls" if os.name == "nt" else "clear")
-        exec_bank_account = bank_account_main()
+        exec_bank_account = bank_account_main(user_data, all_data)
         exec_bank_account()
     except Exception as error:
         console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")

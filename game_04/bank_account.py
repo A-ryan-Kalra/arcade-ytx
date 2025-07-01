@@ -39,6 +39,7 @@ class BankAccount:
         else:
             self.balance -= amount
             print("\nWithdraw Completed...")
+            self.show_balance()
 
     def withdraw_amount(self, amount):
         try:
