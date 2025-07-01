@@ -2,7 +2,6 @@ MANIFEST.in
 README.md
 pyproject.toml
 requirements.txt
-setup.py
 arcade_ytx/__init__.py
 arcade_ytx/main.py
 arcade_ytx.egg-info/PKG-INFO

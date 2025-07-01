@@ -1,7 +1,7 @@
  
 [project]
 name = "arcade-ytx"
-version = "0.3"
+version = "0.4"
 description = "😎 Bring back retro arcade vibes with this Python game pack! All addictive gameplay built with love (and the rich library)."
 readme = "README.md"
 requires-python = ">=3.7"
