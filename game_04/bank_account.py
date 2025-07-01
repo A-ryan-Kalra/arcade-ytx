@@ -1,6 +1,3 @@
-import json
-
-
 class BalanceException(Exception):
     pass
 

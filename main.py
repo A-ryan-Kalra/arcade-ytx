@@ -1,5 +1,70 @@
 from game_01.rock_paper_scissors import rock_paper_scissor
 from game_02.guess_number import guess_number
+from game_03.tic_tac_toe import tic_tac_toe
+from game_04.main import bank_account_main
+import pyfiglet
+from rich.console import Console
+from rich.panel import Panel
+import os
+
+console = Console()
+font = pyfiglet.figlet_format(
+    "........... Welcome To Arcade-YTX ...........", font="starwars"
+)
+
 
 if __name__ == "__main__":
-    import argparse
+    os.system("cls" if os.name == "nt" else "clear")
+    console.print(f"[green bold]{font}[/green bold]")
+    while True:
+        menu = "\n1. Rock Paper Scissors\n\n2. Guess Number\n\n3. Tic Tac Toe\n\n4. Create Bank Account"
+
+        console.print(
+            Panel(
+                menu,
+                title=f"Choose a number to proceed with the game!",
+                subtitle="Press 5 to Exit(🚪)",
+                style="bold green",
+                border_style="bold #e122f2",
+                padding=(0, 1),
+                width=50,
+            ),
+            new_line_start=True,
+            justify="left",
+        )
+        while True:
+            try:
+                user_choice = int(input("\nYour choice: "))
+                if user_choice not in range(1, 10):
+                    console.print("You must enter (1 - 5)", style="bold red on black")
+                    continue
+                else:
+                    break
+            except:
+                console.print("You must enter (1 - 5)", style="bold red on black")
+
+        entered_choice = int(user_choice)
+
+        if entered_choice == 1:
+            os.system("cls" if os.name == "nt" else "clear")
+            run = rock_paper_scissor("")
+            run()
+        elif entered_choice == 2:
+            os.system("cls" if os.name == "nt" else "clear")
+            run = guess_number()
+            run()
+            print("entered_choice, account, store_details")
+        elif entered_choice == 3:
+            os.system("cls" if os.name == "nt" else "clear")
+            board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
+            run = tic_tac_toe()
+            run(board)
+            os.system("cls" if os.name == "nt" else "clear")
+
+        elif entered_choice == 4:
+            print("entered_choice, account, store_details")
+
+        elif entered_choice == 5:
+            break
+        else:
+            console.print(f"You must enter (1 - 9)", style="bold red on black")

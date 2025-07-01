@@ -1,4 +1,4 @@
-from bank_account import *
+from .bank_account import *
 from rich.panel import Panel
 from rich import print
 from rich.console import Console

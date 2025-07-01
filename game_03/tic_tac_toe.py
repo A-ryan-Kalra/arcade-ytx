@@ -155,7 +155,7 @@ def tic_tac_toe():
     global game_running, board, winner
 
     def run_game(board):
-        global game_running, winner, opponent, player2_win, player1_win, computer_win, last_opponent, total_game
+        global game_running, winner, player, console, player1_win, player2_win, computer_win, total_game, opponent, last_opponent
 
         while True:
             play_again = input(
@@ -173,6 +173,17 @@ def tic_tac_toe():
                 opponent = "computer"
                 break
             elif play_again == "3":
+                board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
+                game_running = True
+                winner = None
+                player = "X"
+                console = Console()
+                player1_win = 0
+                player2_win = 0
+                computer_win = 0
+                total_game = 0
+                opponent = None
+                last_opponent = None
                 return
         if last_opponent != opponent:
             player1_win = 0
@@ -215,6 +226,17 @@ def tic_tac_toe():
                 run_game(board)
                 return
             else:
+                board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
+                game_running = True
+                winner = None
+                player = "X"
+                console = Console()
+                player1_win = 0
+                player2_win = 0
+                computer_win = 0
+                total_game = 0
+                opponent = None
+                last_opponent = None
                 return
 
     return run_game
