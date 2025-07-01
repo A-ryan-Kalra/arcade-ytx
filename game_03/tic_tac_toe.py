@@ -1,19 +1,50 @@
 import os
 import random
+from rich import print
+from rich.console import Console
+from rich.markdown import Markdown
 
 board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
 game_running = True
 winner = None
 player = "X"
+console = Console()
+player1_win = 0
+player2_win = 0
+computer_win = 0
+total_game = 0
+opponent = None
+last_opponent = None
 
 
 def print_board(board):
     os.system("cls" if os.name == "nt" else "clear")
-    print(board[0] + " | " + board[1] + " | " + board[2])
-    print("----------")
-    print(board[3] + " | " + board[4] + " | " + board[5])
-    print("----------")
-    print(board[6] + " | " + board[7] + " | " + board[8])
+    console.print(
+        board[0]
+        + " [bold cyan]|[/bold cyan] "
+        + board[1]
+        + " [bold cyan]|[/bold cyan] "
+        + board[2],
+        style="bold green",
+    )
+    console.print("----------", style="bold cyan")
+    console.print(
+        board[3]
+        + " [bold cyan]|[/bold cyan] "
+        + board[4]
+        + " [bold cyan]|[/bold cyan] "
+        + board[5],
+        style="bold green",
+    )
+    console.print("----------", style="bold cyan")
+    console.print(
+        board[6]
+        + " [bold cyan]|[/bold cyan] "
+        + board[7]
+        + " [bold cyan]|[/bold cyan] "
+        + board[8],
+        style="bold green",
+    )
 
 
 def enter_choice(board):
@@ -77,10 +108,19 @@ def check_vertical(board):
 
 
 def check_winner(board):
-    global game_running
+    global game_running, total_game, player1_win, player2_win, computer_win, player
     if check_horizontal(board) or check_diagonal(board) or check_vertical(board):
-        print(f"\nWinner is player {player}\n")
+        console.print(f"\nWinner is player {player}\n", style="bold i blue")
         game_running = False
+        total_game += 1
+        if player == "X":
+            player1_win += 1
+        elif player == "O" and opponent == "player":
+            player2_win += 1
+        elif player == "O" and opponent == "computer":
+            computer_win += 1
+        player = "X"
+
         return True
 
 
@@ -93,11 +133,13 @@ def switch_player():
 
 
 def check_tie(board):
-    global game_running
+    global game_running, total_game
     if "-" not in board:
-        game_running = False
+        # game_running = False
         print_board(board)
         print("\nIt's a tie!\n")
+        total_game += 1
+        return True
 
 
 def computer_choice(board):
@@ -109,11 +151,73 @@ def computer_choice(board):
             switch_player()
 
 
-while game_running:
-    print_board(board)
-    enter_choice(board)
-    if check_winner(board):
-        break
-    check_tie(board)
-    switch_player()
-    computer_choice(board)
+def tic_tac_toe():
+    global game_running, board, winner
+
+    def run_game(board):
+        global game_running, winner, opponent, player2_win, player1_win, computer_win, last_opponent, total_game
+
+        while True:
+            play_again = input(
+                f"\nHello player {player},\nPress 1 to play against Player or\nPress 2 to play against Computer: "
+            )
+
+            if play_again not in ["1", "2"]:
+                print("\nPlease choose (1/2): ")
+                continue
+            elif play_again == "1":
+                opponent = "player"
+                break
+
+            elif play_again == "2":
+                opponent = "computer"
+                break
+        if last_opponent != opponent:
+            player1_win = 0
+            player2_win = 0
+            total_game = 0
+
+        last_opponent = opponent
+
+        while game_running:
+            print_board(board)
+            enter_choice(board)
+            if check_winner(board):
+                break
+            if check_tie(board):
+                break
+            switch_player()
+            if opponent == "computer":
+                computer_choice(board)
+
+        MARKDOWN = f"""\n
+> Player X Win: {player1_win}\\
+> Player O Win: {player2_win if opponent=='player' else computer_win}\\
+> Game Count: {total_game}\n
+            """
+        md = Markdown(MARKDOWN)
+        console.print(md)
+
+        while True:
+            play_again = input("\nWanna play again? (y/n) ")
+            if play_again not in ["y", "n"]:
+                print("\nPlease choose (y/n): ")
+                continue
+            elif play_again == "y":
+                game_running = True
+                board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
+                # opponent = None
+                winner = None
+                os.system("cls" if os.name == "nt" else "clear")
+
+                run_game(board)
+                return
+            else:
+                return
+
+    return run_game
+
+
+if __name__ == "__main__":
+    exc_game = tic_tac_toe()
+    exc_game(board)
