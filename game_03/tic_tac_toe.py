@@ -147,7 +147,8 @@ def computer_choice(board):
         position = random.randint(0, 8)
         if board[position] == "-":
             board[position] = player
-            check_winner(board)
+            if check_winner(board):
+                break
             switch_player()
 
 

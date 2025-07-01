@@ -13,9 +13,7 @@ font = pyfiglet.figlet_format(
 )
 
 
-if __name__ == "__main__":
-    os.system("cls" if os.name == "nt" else "clear")
-    console.print(f"[green bold]{font}[/green bold]")
+def show_menu():
     while True:
         menu = "\n1. Rock Paper Scissors\n\n2. Guess Number\n\n3. Tic Tac Toe\n\n4. Create Bank Account"
 
@@ -68,3 +66,9 @@ if __name__ == "__main__":
             break
         else:
             console.print(f"You must enter (1 - 9)", style="bold red on black")
+
+
+if __name__ == "__main__":
+    os.system("cls" if os.name == "nt" else "clear")
+    console.print(f"[green bold]{font}[/green bold]")
+    show_menu()
