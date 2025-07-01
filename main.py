@@ -18,6 +18,7 @@ console = Console()
 font = pyfiglet.figlet_format(
     "........... Welcome To Arcade-YTX ...........", font="starwars"
 )
+developer_name = pyfiglet.figlet_format("By Aryan Kalra", font="digital")
 
 
 def show_menu():
@@ -97,7 +98,10 @@ def show_menu():
 if __name__ == "__main__":
     os.system("cls" if os.name == "nt" else "clear")
     try:
-        console.print(f"[green bold]{font}[/green bold]")
+        console.print(f"[green bold]{font}[/green bold]\n")
+        console.print(
+            f"[bold yellow]{developer_name}[/bold yellow]\n", justify="center"
+        )
         show_menu()
     except Exception as error:
         console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
