@@ -9,6 +9,8 @@ from rich.align import Align
 import sys
 import os
 import json
+from rich.progress import track
+import time
 
 user_data = {}
 combined = {}
@@ -62,6 +64,12 @@ def get_user(user_name):
     return user_data.get(user_name)
 
 
+def show_progress_bar(num=0.3):
+    for i in track(range(10), description="processing", style=""):
+        # print(f"working {i}")
+        time.sleep(num)
+
+
 def fetch_info(num, account: Union[BankAccount], store_details):
 
     os.system("cls" if os.name == "nt" else "clear")
@@ -71,7 +79,18 @@ def fetch_info(num, account: Union[BankAccount], store_details):
         case 2:
             menu = "\nPlease enter the amount you wish to deposit\n"
             console.print(menu, style="bold magenta")
-            amount = float(input(f"Enter amount: "))
+
+            while True:
+                try:
+                    amount = float(input(f"Enter amount: "))
+
+                    if amount < 0:
+                        print("Please enter number only")
+                    break
+                except:
+                    print("Please enter a valid number")
+
+            show_progress_bar(0.2)
             account.deposit(amount)
             acc_type = 1 if account.type == "Savings" else 2
 
@@ -84,7 +103,6 @@ def fetch_info(num, account: Union[BankAccount], store_details):
 
             user_data[account.name + str(acc_type)] = account
             all_data[account.name + str(acc_type)] = account.to_dict()
-
             write_data("user-list", all_data)
             return
         case 3:
@@ -199,13 +217,20 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             type = 1 if all_acounts[select_acc - 1].get("type") == "Savings" else 2
             transfer_acc = get_user(user_name=selected_user_name + str(type))
 
-            menu = "\nPlease enter the amount you wish to transfer\n"
-            console.print(menu, style="bold magenta")
-            amount = float(input(f"Enter amount: "))
+            while True:
+                menu = "\nPlease enter the amount you wish to transfer\n"
+                console.print(menu, style="bold magenta")
+                try:
+                    amount = float(input(f"Enter amount: "))
+                    break
+                except Exception as error:
+                    print("Invalid input. Please enter a numeric value.")
+
+            show_progress_bar(0.2)
+
             os.system("cls" if os.name == "nt" else "clear")
 
             account.transfer_amount(amount, transfer_acc)
-            print("store_details 1", store_details)
 
             for detail in store_details:
                 if (
@@ -213,7 +238,6 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     and detail["type"] == transfer_acc.type
                 ):
                     detail["initial_amount"] = transfer_acc.balance
-            print("store_details 2", store_details)
 
             console.print(
                 "Please select option 5(Show All Accounts) to verify the reflected changes",
@@ -226,7 +250,6 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             all_data[transfer_acc.name + str(type)] = transfer_acc.to_dict()
             all_data[account.name + str(acc_type)] = account.to_dict()
 
-            print("\nAll Data", all_data)
             write_data("user-list", all_data)
             return
 
@@ -352,16 +375,18 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 )
             console.print(Align.center(table, style="bold"))
             console.print(
-                "\nPlease select the account via number to delete the account\n"
+                "\nPlease select the account via number to delete the account\nor Press e to exit: "
             )
             while True:
                 try:
-                    switch_acc = int(input("\nYour choice\n")) - 1
-
+                    switch_acc = input("\nYour choice: ")
+                    if switch_acc == "e":
+                        return store_details
+                    switch_acc = int(switch_acc) - 1
                     if switch_acc < 0:
                         print("Please enter number only")
                 except:
-                    print("Please enter a valid number")
+                    print("Please enter a valid number\nor Press e to exit: ")
                     continue
 
                 if switch_acc not in range(0, len(all_acounts)):
@@ -376,9 +401,16 @@ def fetch_info(num, account: Union[BankAccount], store_details):
 
             user_name = get_acc["user_name"]
             store_details = [
-                detail for detail in store_details if detail["user_name"] != user_name
+                detail
+                for detail in store_details
+                if not (
+                    detail["user_name"] == user_name
+                    and detail["type"] == get_acc["type"]
+                )
             ]
             type = 1 if get_acc["type"] == "Savings" else 2
+            show_progress_bar(0.2)
+            print(f"\nAccount deleted: {user_name}/{get_acc["type"]}")
 
             del user_data[user_name + str(type)]
             all_data.pop(user_name + str(type))
@@ -536,12 +568,17 @@ def bank_account_main():
                 justify="left",
             )
             while True:
-                user_choice = int(input("\nYour choice: "))
-                if user_choice not in range(1, 10):
+                try:
+                    user_choice = int(input("\nYour choice: "))
+                    if user_choice not in range(1, 10):
+                        console.print(
+                            "You must enter (1 - 9)", style="bold red on black"
+                        )
+                        continue
+                    else:
+                        break
+                except:
                     console.print("You must enter (1 - 9)", style="bold red on black")
-                    continue
-                else:
-                    break
 
             entered_choice = int(user_choice)
 

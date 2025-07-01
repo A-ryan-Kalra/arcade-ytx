@@ -20,7 +20,7 @@ class BankAccount:
     def show_balance(self):
         print(f"\nCurrent balance '{self.name}': ${self.balance:,.2f}\n")
 
-    def deposit(self, amount):
+    def deposit(self, amount, add_interest=False):
         self.balance += amount
 
     def viable_transaction(self, amount):
@@ -56,7 +56,7 @@ class BankAccount:
         try:
             self.viable_transaction(amount)
             self.balance -= amount
-            account.deposit(amount)
+            account.deposit(amount, False)
             print(f"\nTransfer Completed...")
             self.show_balance()
         except BalanceException as error:
@@ -65,10 +65,13 @@ class BankAccount:
 
 class InterestRewardAccount(BankAccount):
 
-    def deposit(self, amount):
-        self.balance += amount * 1.05
+    def deposit(self, amount, add_interest=True):
+        self.balance += amount * 1.05 if add_interest else amount
         print(
-            "\nDeposit Completed...\nPlease note, a 5% interest will be applied on each deposit 🎉\n"
+            "\nDeposit Completed...\n"
+            + "Please note, a 5% interest will be applied on each deposit 🎉\n"
+            if add_interest
+            else ""
         )
         self.show_balance()
 
@@ -100,3 +103,8 @@ class CurrentAccount(BankAccount):
             self.viable_transaction_current(amount, self.overdraft_limit)
         except BalanceException as error:
             print(error)
+
+    def deposit(self, amount, show=True):
+        super().deposit(amount, show)
+        print("\nDeposit Completed...\n")
+        self.show_balance()
