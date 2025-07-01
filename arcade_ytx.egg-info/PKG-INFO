@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: arcade-ytx
+Version: 0.3
+Summary: 😎 Bring back retro arcade vibes with this Python game pack! All addictive gameplay built with love (and the rich library).
+Home-page: https://github.com/A-ryan-Kalra/arcade-ytx/tree/feat/all-game
+Author: {'name': 'Aryan Kalra', 'email': 'aryan.kalra363@gmail.com'}
+Author-email: Aryan Kalra <aryan.kalra363@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/A-ryan-Kalra/arcade-ytx/tree/feat/all-game
+Keywords: arcade,games,terminal,rich,python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: markdown-it-py==3.0.0
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: Pygments==2.19.2
+Requires-Dist: rich==14.0.0
+Dynamic: author
+Dynamic: home-page

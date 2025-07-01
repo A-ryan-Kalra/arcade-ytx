@@ -1,7 +1,7 @@
-from game_01.rock_paper_scissors import rock_paper_scissor
-from game_02.guess_number import guess_number
-from game_03.tic_tac_toe import tic_tac_toe
-from game_04.main import (
+from .game_01.rock_paper_scissors import rock_paper_scissor
+from .game_02.guess_number import guess_number
+from .game_03.tic_tac_toe import tic_tac_toe
+from .game_04.main import (
     bank_account_main,
     read_data,
     SavingsAccount,
@@ -95,7 +95,7 @@ def show_menu():
             console.print(f"You must enter (1 - 9)", style="bold red on black")
 
 
-if __name__ == "__main__":
+def run_game():
     os.system("cls" if os.name == "nt" else "clear")
     try:
         console.print(f"[green bold]{font}[/green bold]\n")
@@ -106,3 +106,7 @@ if __name__ == "__main__":
     except Exception as error:
         console.print(f"\nError occurred at: \n{error}\n", style="bold red on black")
         sys.exit()
+
+
+if __name__ == "__main__":
+    run_game()

@@ -1,0 +1,6 @@
+include *.py
+include *.txt
+recursive-include game_01 *.py
+recursive-include game_02 *.py
+recursive-include game_03 *.py
+recursive-include game_04 *.py
