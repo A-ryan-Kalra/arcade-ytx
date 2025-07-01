@@ -159,11 +159,11 @@ def tic_tac_toe():
 
         while True:
             play_again = input(
-                f"\nHello player {player},\nPress 1 to play against Player or\nPress 2 to play against Computer: "
+                f"\nHello player {player},\nPress 1 to play against Player\nPress 2 to play against Computer\nor Press 3 to Exit: "
             )
 
-            if play_again not in ["1", "2"]:
-                print("\nPlease choose (1/2): ")
+            if play_again not in ["1", "2", "3"]:
+                print("\nPlease choose (1 - 3): ")
                 continue
             elif play_again == "1":
                 opponent = "player"
@@ -172,6 +172,8 @@ def tic_tac_toe():
             elif play_again == "2":
                 opponent = "computer"
                 break
+            elif play_again == "3":
+                return
         if last_opponent != opponent:
             player1_win = 0
             player2_win = 0
