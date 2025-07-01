@@ -349,7 +349,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             user_name = get_acc["user_name"]
             type = 1 if get_acc["type"] == "Savings" else 2
             account = user_data[user_name + str(type)]
-            console.print(f"\nAccount switched to: {user_name}/{get_acc["type"]}")
+            console.print(f"\nAccount switched to: {user_name}/{get_acc['type']}")
             return account
         case 8:
             all_acounts = [
@@ -419,7 +419,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                 all_data.pop(key)
             else:
                 print(f"{user_name} does not exist.")
-            print(f"\nAccount deleted: {user_name}/{get_acc["type"]}")
+            print(f"\nAccount deleted: {user_name}/{get_acc['type']}")
             del user_data[user_name + str(type)]
             # all_data.pop(user_name + str(type))
             write_data("user-list", all_data)
