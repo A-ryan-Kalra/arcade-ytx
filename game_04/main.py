@@ -495,11 +495,11 @@ def account_create(store_details: list) -> dict:
     }
 
 
-def bank_account_main(user_dat, all_dat):
+def bank_account_main(user_info, all_info):
     # store_details = []
     global user_data, all_data
-    user_data = user_dat
-    all_data = all_dat
+    user_data = user_info
+    all_data = all_info
     store_details = (
         read_data("store-data") if type(read_data("store-data")) is list else []
     )
