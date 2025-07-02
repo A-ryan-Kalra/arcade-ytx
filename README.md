@@ -3,7 +3,9 @@
   # arcade-ytx 🚀🎮🛸
   
   ### 😎 Relive the golden days of gaming 👾 with this vibrant python gaming pack! **arcade-ytx**🌈🦄 is a terminal-based collection of addictive mini-games and pure fun for gamers of all ages.
-
+ 
+ <video src="https://github.com/user-attachments/assets/a3334250-57d1-4f91-ac3c-00d7c5fabb9f"  autoplay muted loop /> 
+ 
 </div>
 
 <br/>
