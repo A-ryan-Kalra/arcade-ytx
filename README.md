@@ -42,7 +42,7 @@
 ## 💎 Features
 
 - 🖥️ Retro-themed colorful UI built using the `rich` library.
-- 💾 Account information is stored using streams (JSON files behind the scenes).
+- 💾 Bank account game information is stored using streams (JSON files behind the scenes) in user-details.json.
 - 🧠 Smart prompts and validations for a smooth game experience.
 - 🧑‍🤝‍🧑 2-player support for games like Tic Tac Toe.
 - 📦 Easy to install and play right from your terminal.
@@ -67,6 +67,7 @@ Open your terminal and type:
 ```bash
 pip uninstall arcade-ytx
 ```
+and also remove the `user-details.json` file stored in the root directory
 <br/>
 
 <details>
