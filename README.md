@@ -15,7 +15,7 @@
 - [🕹️ Games included:](#%EF%B8%8F-games-included)
   - [Guess Number 🤔 & Rock Peper Scissors 🪨📃✂️](#guess-number--rock-paper-scissors-%EF%B8%8F)
   - [Tic Tac Toe](#tic-tac-toe)
-  - [Create Bank Account 🏦💰](#create-bank-account)
+  - [Create Bank Account 🏦💰](#create-bank-account-)
 - [💎 Features](#-features)
 - [🚀 Installation](#-installation)
 - [🚮 Uninstalling](#-uninstalling)
@@ -55,7 +55,7 @@ Make sure you have Python 3.7+ installed.
 
 ```bash
 pip install arcade-ytx
-# If It shows up an error about 'pip not found', just replace pip with pip3.
+# If you see an error saying 'pip not found', just replace 'pip' with 'pip3'.
 ```
 
 <br/>
