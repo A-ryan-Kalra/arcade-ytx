@@ -8,7 +8,7 @@ class BankAccount:
         self.balance = initialAmount
         self.type = type
         print(
-            f"\nAccount '{self.name}' created.\tType = '{self.type}'\nBalance = ${self.balance:,.2f}.\nPlease note, a 5% interest has been applied 🎉.\n"
+            f"\nAccount '{self.name}' created.\tType = '{self.type}'\nBalance = ${self.balance:,.2f}.\n{"Please note, a 5% interest has been applied 🎉.\n" if type=="Savings" else ""}"
         )
 
     def to_dict(self):

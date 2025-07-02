@@ -24,13 +24,15 @@
 
 ## 🕹️ Games included
 
-* ###  Guess Number🤔 & Rock Paper Scissors 🪨📃✂️
+- ### Guess Number🤔 & Rock Paper Scissors 🪨📃✂️
+
   - Can you read the machine's mind? Try to guess the right number in as few tries as possible.
 
-* ### Tic Tac Toe 
+- ### Tic Tac Toe
+
   - Classic 2-player game. Challenge your friend or battle the computer, all in terminal!
 
-* ### Create Bank Account 🏦💰
+- ### Create Bank Account 🏦💰
   - Simulate creating and managing a bank account.
   - Add account details like name, type (Savings/Current) and balance.
   - Transfer money and simulate interest on deposits with realistic prompts.
@@ -56,6 +58,9 @@ Make sure you have Python 3.7+ installed.
 ```bash
 pip install arcade-ytx
 # If you see an error saying 'pip not found', just replace 'pip' with 'pip3'.
+
+arcade-ytx
+# run this command to begin the game.
 ```
 
 <br/>
@@ -67,7 +72,8 @@ Open your terminal and type:
 ```bash
 pip uninstall arcade-ytx
 ```
-and also remove the `user-details.json` file stored in the root directory
+
+and also remove the `user-details.json` file stored in the root directory.
 <br/>
 
 <details>
