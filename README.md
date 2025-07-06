@@ -16,7 +16,7 @@
 
 - [🕹️ Games included:](#%EF%B8%8F-games-included)
   - [Guess Number 🤔 & Rock Paper Scissors 🪨📃✂️](#guess-number--rock-paper-scissors-%EF%B8%8F)
-  - [Tic Tac Toe](#tic-tac-toe)
+  - [ 🚀 Key Functionalities]( 🚀 Key Functionalities)
   - [Create Bank Account 🏦💰](#create-bank-account-)
 - [💎 Features](#-features)
 - [🚀 Installation](#-installation)
