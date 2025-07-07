@@ -1,2 +1,0 @@
-[console_scripts]
-arcade-ytx = arcade_ytx.main:run_game

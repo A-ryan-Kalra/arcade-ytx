@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from random import choice
 from rich.panel import Panel
 from rich import print
