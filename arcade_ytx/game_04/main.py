@@ -38,6 +38,8 @@ def read_data(key):
 
 
 def create_user(user_name, type, initial_amount):
+    os.system("cls" if os.name == "nt" else "clear")
+
     if user_name + type not in user_data:
         if int(type) == 1:
             new_account = SavingsAccount(user_name, float(initial_amount))
@@ -74,11 +76,13 @@ def show_progress_bar(num=0.3):
 
 def fetch_info(num, account: Union[BankAccount], store_details):
 
-    os.system("cls" if os.name == "nt" else "clear")
+    # os.system("cls" if os.name == "nt" else "clear")
     match num:
         case 1:
+            os.system("cls" if os.name == "nt" else "clear")
             return account.show_balance()
         case 2:
+            os.system("cls" if os.name == "nt" else "clear")
             menu = "\nPlease enter the amount you wish to deposit\n"
             console.print(menu, style="bold magenta")
 
@@ -108,6 +112,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             write_data("user-list", all_data)
             return
         case 3:
+            os.system("cls" if os.name == "nt" else "clear")
             menu = "\nPlease enter the amount you wish to withdraw\n"
             console.print(menu, style="bold magenta")
             amount = float(input(f"Enter amount: "))
@@ -128,7 +133,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             write_data("user-list", all_data)
             return
         case 4:
-
+            os.system("cls" if os.name == "nt" else "clear")
             table = Table(title="List Of Accounts", min_width=50)
             all_acounts = [
                 detail
@@ -166,7 +171,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                         ).values()
                         os.system("cls" if os.name == "nt" else "clear")
                         create_user(user_name, type, initial_amount)
-
+                        fetch_info(5, account, store_details)
                         console.print(
                             "Would you like to add more accounts? (y/n):  ",
                             style="yellow bold",
@@ -257,6 +262,8 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             return
 
         case 5:
+            # os.system("cls" if os.name == "nt" else "clear")
+
             table = Table(title="List Of Accounts", min_width=50)
             table.add_column("No", style="blue", justify="center")
             table.add_column("Name", style="cyan")
@@ -275,6 +282,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             console.print(Align.center(table, style="bold"))
             return
         case 6:
+            # os.system("cls" if os.name == "nt" else "clear")
             while True:
                 try:
                     initial_amount, user_name, type = account_create(
@@ -307,6 +315,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
                     print(error)
             return
         case 7:
+            os.system("cls" if os.name == "nt" else "clear")
             all_acounts = [
                 detail
                 for detail in store_details
@@ -352,6 +361,7 @@ def fetch_info(num, account: Union[BankAccount], store_details):
             console.print(f"\nAccount switched to: {user_name}/{get_acc['type']}")
             return account
         case 8:
+            os.system("cls" if os.name == "nt" else "clear")
             all_acounts = [
                 detail
                 for detail in store_details
